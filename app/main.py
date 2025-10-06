@@ -16,6 +16,8 @@ class ShipBuild:
         self.logger = setup_logging()
         sys.excepthook = handle_exception
 
+        self.logger.info(f"인공지능 서버 실행됨")
+
         self.app = FastAPI(
             title="조선해양 공모전 AI 서버",
             version=VERSION,
