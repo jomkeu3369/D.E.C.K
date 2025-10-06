@@ -4,7 +4,6 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.log import setup_logging, handle_exception
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,10 +12,6 @@ sys.dont_write_bytecode = True
 
 class ShipBuild:
     def __init__(self):
-        self.logger = setup_logging()
-        sys.excepthook = handle_exception
-
-        self.logger.info(f"인공지능 서버 실행됨")
 
         self.app = FastAPI(
             title="조선해양 공모전 AI 서버",
