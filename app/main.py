@@ -19,7 +19,7 @@ class ShipBuild:
         self.app = FastAPI(
             title="조선해양 공모전 AI 서버",
             version=VERSION,
-            description="조선해양 공모전 AI 서버입니다.",
+            description="조선해양 공모전 AI 서버입니다.\n제작: 경상국립대학교 컴퓨터공학부 정승원",
         )
 
         self._configure_cors()
