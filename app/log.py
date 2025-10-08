@@ -9,6 +9,9 @@ FILE_HANDLER_FORMAT = "[%(asctime)s] %(levelname)s [%(filename)s:%(funcName)s:%(
 LOG_PATH = os.path.join(os.getcwd(), "app", "logs")
 
 def setup_logging() -> logging.Logger:
+    if not os.path.exists(LOG_PATH):
+        os.makedirs(LOG_PATH, exist_ok=True)
+
     logging.basicConfig(
         level=logging.INFO,
         format=RICH_FORMAT,
