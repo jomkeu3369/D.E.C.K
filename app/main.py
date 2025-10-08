@@ -10,7 +10,7 @@ from app.log import setup_logging, handle_exception
 from dotenv import load_dotenv
 
 load_dotenv()
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 sys.dont_write_bytecode = True
 
 class ShipBuild:
