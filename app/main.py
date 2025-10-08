@@ -4,14 +4,19 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api import router
+from app.log import setup_logging, handle_exception
+
 from dotenv import load_dotenv
 
 load_dotenv()
-VERSION = os.getenv("VERSION")
+VERSION = "0.1.1"
 sys.dont_write_bytecode = True
 
 class ShipBuild:
     def __init__(self):
+        self.logger = setup_logging()
+        sys.excepthook = handle_exception
 
         self.app = FastAPI(
             title="조선해양 공모전 AI 서버",
@@ -40,6 +45,7 @@ class ShipBuild:
         async def get_version():
             return {"version": VERSION}
 
+        self.app.include_router(router.router)
     
     def get_app(self) -> FastAPI:
         return self.app
