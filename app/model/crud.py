@@ -20,7 +20,12 @@ async def analyze_image_with_gpt(image_base64: str) -> str:
     human_message = HumanMessage(
         content=[
             {"type": "text", "text": "Analyze the following image and provide a detailed description:"},
-            {"type": "image_url", "image_url": f"data:image/png;base64,{image_base64}"},
+            {
+                "type": "image_url", 
+                "image_url": {
+                    "url": f"data:image/png;base64,{image_base64}"
+                },
+            }
         ]
     )
 

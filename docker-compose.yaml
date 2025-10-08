@@ -1,6 +1,6 @@
 version: '3.8'
 
-name: ShipBuild
+name: shipbuild
 
 services:
   backend:
