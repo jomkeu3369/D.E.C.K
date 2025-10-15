@@ -12,7 +12,6 @@ load_dotenv()
 logger = setup_logging()
 sys.excepthook = handle_exception
 
-
 async def analyze_image_with_gpt(image_base64: str) -> str:
     llm = ChatOpenAI(model="gpt-5-mini", temperature=0)
 
