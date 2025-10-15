@@ -1,9 +1,10 @@
+import os
 import sys
 import base64
 import tempfile
 from pathlib import Path
 
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, File, UploadFile, BackgroundTasks
 from fastapi.responses import FileResponse
 from ultralytics import YOLO
 
@@ -13,11 +14,18 @@ from app.model.crud import analyze_image_with_gpt
 from dotenv import load_dotenv
 load_dotenv()
 
-model = YOLO('runs/segment/train/weights/best.pt')
+model = YOLO('app/runs/segment/train/weights/best.pt')
 router = APIRouter()
 
 logger = setup_logging()
 sys.excepthook = handle_exception
+
+def cleanup_file(path: str):
+    """백그라운드에서 임시 파일을 안전하게 삭제하는 함수"""
+    try:
+        os.remove(path)
+    except OSError as e:
+        print(f"Error removing file {path}: {e}")
 
 @router.post("/analyze/llm", tags=["image"])
 async def analyze_image_with_llm(file: UploadFile = File(...)):
@@ -29,19 +37,28 @@ async def analyze_image_with_llm(file: UploadFile = File(...)):
 
 
 @router.post("/analyze/yolo", tags=["image"])
-async def analyze_image_with_yolo(file: UploadFile = File(...)):
+async def analyze_image_with_yolo(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+    if not model:
+        return {"error": "Model is not loaded."}
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=Path(file.filename).suffix) as tmp_upload:
+        tmp_upload.write(await file.read())
+        upload_path = tmp_upload.name
+
+    results = model.predict(upload_path)
     
-    # 파일 임시 저장
-    with tempfile.TemporaryDirectory() as tmpdir:
-        img_path = Path(tmpdir) / file.filename
-        with img_path.open("wb") as f:
-            f.write(await file.read())
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp_result:
+        result_path = tmp_result.name
 
-    output_dir = Path(tmpdir) / "results"
-    results = model.predict(output_dir)
+    if results:
+        results[0].save(filename=result_path)
+    else:
+        cleanup_file(upload_path)
+        return {"error": "Failed to get prediction results."}
 
-    for r in results:
-        r.save(filename='result_seg.jpg')
+    background_tasks.add_task(cleanup_file, upload_path)
+    background_tasks.add_task(cleanup_file, result_path)
 
-    return FileResponse('result_seg.jpg')
+    return FileResponse(result_path)
+
         
