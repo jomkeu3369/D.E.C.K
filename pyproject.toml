@@ -17,6 +17,7 @@ langchain-community = "^0.3.30"
 pydantic = "^2.11.10"
 rich = "^14.1.0"
 python-multipart = "^0.0.20"
+ultralytics = "^8.3.214"
 
 
 [build-system]

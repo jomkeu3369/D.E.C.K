@@ -1,10 +1,11 @@
 import sys
 import base64
 import tempfile
-import subprocess
+from pathlib import Path
 
 from fastapi import APIRouter, File, UploadFile
 from fastapi.responses import FileResponse
+from ultralytics import YOLO
 
 from app.log import setup_logging, handle_exception
 from app.model.crud import analyze_image_with_gpt
@@ -12,6 +13,7 @@ from app.model.crud import analyze_image_with_gpt
 from dotenv import load_dotenv
 load_dotenv()
 
+model = YOLO('runs/segment/train/weights/best.pt')
 router = APIRouter()
 
 logger = setup_logging()
@@ -28,5 +30,18 @@ async def analyze_image_with_llm(file: UploadFile = File(...)):
 
 @router.post("/analyze/yolo", tags=["image"])
 async def analyze_image_with_yolo(file: UploadFile = File(...)):
-    ...
     
+    # 파일 임시 저장
+    with tempfile.TemporaryDirectory() as tmpdir:
+        img_path = Path(tmpdir) / file.filename
+        with img_path.open("wb") as f:
+            f.write(await file.read())
+
+    output_dir = Path(tmpdir) / "results"
+    results = model.predict(output_dir)
+
+    for r in results:
+        r.save(filename='result_seg.jpg')
+
+    return FileResponse('result_seg.jpg')
+        
