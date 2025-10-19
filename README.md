@@ -1,8 +1,6 @@
 # AI 기반 실시간 선박 표면 검사 시스템
 2025 k-조선 해커톤 참가를 위한 "D.E.C.K(Deep-learning Enhanced K-shipbuilding)" 팀의 AI 모델 레포지토리입니다.
-
-<img width="1159" height="647" alt="메인" src="https://github.com/user-attachments/assets/4e7c85f4-f835-49d3-9721-83e60e579286" />
-
+- **참가한 공모전**: https://linkareer.com/activity/267766
 
 ## 프로젝트 개요
 조선 산업의 선박 검사 과정에서 발생하는 고위험, 고비용, 비효율 문제를 해결하기 위해 개발된 인공지능 기반 실시간 표면 검사 및 진단 시스템입니다. 
