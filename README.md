@@ -100,5 +100,4 @@ CCTV, 드론, 스마트기기 등 다양한 카메라 장비로부터 영상을 
     ```
     
 ## 작동 예시
-YOLOv8 이미지 탐지 결과
 <img width="708" height="396" alt="KakaoTalk_20251016_004745213" src="https://github.com/user-attachments/assets/df352b94-d8c8-49a0-b123-2eb286243be9" />
