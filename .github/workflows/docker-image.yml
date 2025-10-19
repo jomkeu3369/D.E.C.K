@@ -3,6 +3,8 @@ name: CI/CD
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - "README.md"
 
 jobs:
   build: 
@@ -30,7 +32,6 @@ jobs:
           ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_BUILD_FILE }}:${{ github.sha }}
         cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_BUILD_FILE }}:latest
         cache-to: type=inline
-
 
   # 배포
   deploy:
