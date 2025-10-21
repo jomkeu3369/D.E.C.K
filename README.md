@@ -103,3 +103,6 @@ CCTV, 드론, 스마트기기 등 다양한 카메라 장비로부터 영상을 
 ## 작동 예시
 - 현재 학습 데이터셋: 110개
 <img width="708" height="396" alt="KakaoTalk_20251016_004745213" src="https://github.com/user-attachments/assets/df352b94-d8c8-49a0-b123-2eb286243be9" />
+
+![제목 없는 비디오 - Clipchamp로 제작](https://github.com/user-attachments/assets/a573e540-cd89-43ee-a1f2-ce693bd66e03)
+
